@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "chargepal-cvpd"
 version = "0.1.0"
-description = ""
+description = "Package to detect 3D poses from RGB images using marker and geometric patterns"
 authors = ["Georg John <georg.john@dfki.de>"]
 readme = "README.md"
 packages = [{include = "cvpd"}]
@@ -10,10 +10,13 @@ packages = [{include = "cvpd"}]
 python = "^3.8"
 opencv-python = "4.7.0.68"
 pyrealsense2 = "^2.54.2.5684"
+scipy = "1.9.3"
 tomli = "^2.0.1"
 tomli-w = "^1.0.0"
 tomlkit = "^0.12.3"
 tqdm = "^4.66.1"
+# Internal dependencies
+chargepal_camera_kit = {git = "git@git.ni.dfki.de:chargepal/manipulation/chargepal_camera_kit.git"}
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.7.1"
