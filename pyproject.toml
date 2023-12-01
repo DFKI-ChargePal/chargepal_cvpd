@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "chargepal-cvpd"
+version = "0.1.0"
+description = ""
+authors = ["Georg John <georg.john@dfki.de>"]
+readme = "README.md"
+packages = [{include = "cvpd"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+opencv-python = "4.7.0.68"
+pyrealsense2 = "^2.54.2.5684"
+tomli = "^2.0.1"
+tomli-w = "^1.0.0"
+tomlkit = "^0.12.3"
+tqdm = "^4.66.1"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.7.1"
+types-tqdm = "^4.66.0.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
