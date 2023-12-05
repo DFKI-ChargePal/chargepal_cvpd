@@ -2,7 +2,7 @@
 
 [[package]]
 name = "chargepal-camera-kit"
-version = "1.2.0"
+version = "1.2.1"
 description = "A tool kit for working with serial cameras."
 optional = false
 python-versions = "^3.8"
@@ -22,7 +22,7 @@ tqdm = "^4.66.1"
 type = "git"
 url = "git@git.ni.dfki.de:chargepal/manipulation/chargepal_camera_kit.git"
 reference = "HEAD"
-resolved_reference = "9ae1bb0164b977982d8a809d4add2dfdfeb74006"
+resolved_reference = "7f8871fbf19d9156a783f894bcfa70798e6ecddd"
 
 [[package]]
 name = "colorama"

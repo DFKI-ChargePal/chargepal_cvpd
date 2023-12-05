@@ -118,3 +118,6 @@ dmypy.json
 
 # VSCode
 .vscode/
+
+# Project
+examples/
