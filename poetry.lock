@@ -13,6 +13,7 @@ develop = false
 opencv-python = "4.7.0.68"
 pyrealsense2 = "^2.54.2.5684"
 pyyaml = "^6.0.1"
+scipy = "1.9.3"
 tomli = "^2.0.1"
 tomli-w = "^1.0.0"
 tomlkit = "^0.12.3"
@@ -22,7 +23,7 @@ tqdm = "^4.66.1"
 type = "git"
 url = "git@git.ni.dfki.de:chargepal/manipulation/chargepal_camera_kit.git"
 reference = "HEAD"
-resolved_reference = "7f8871fbf19d9156a783f894bcfa70798e6ecddd"
+resolved_reference = "348c953d854289f67f2b11f6f0795e32c44c2b89"
 
 [[package]]
 name = "colorama"
