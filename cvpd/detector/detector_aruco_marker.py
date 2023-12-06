@@ -29,6 +29,7 @@ class ArucoMarkerDetector(DetectorBase):
         marker_offset = self.config['marker_offset']
         self.marker = ArucoMarker(
             marker_id, marker_size, marker_type, marker_offset['xyz'], marker_offset['wxyz'])
+        self.cv_detector = cv.aruco.ArucoDetector(self.marker.aruco_dict)
 
     def _find_pose(self) -> tuple[bool, PosOrinType]:
         """ Finding the pose of a marker described object
@@ -41,7 +42,7 @@ class ArucoMarkerDetector(DetectorBase):
         p, q = (0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0)
         img = self.camera.get_color_frame()
         # get all markers on image
-        found_corners, found_ids, _ = self.marker.cv_detector.detectMarkers(img)
+        found_corners, found_ids, _ = self.cv_detector.detectMarkers(img)
         # if corners are detected, check if they include the searched marker
         if len(found_corners) > 0:
             det_id_list = [_id[0] for _id in found_ids.tolist()]

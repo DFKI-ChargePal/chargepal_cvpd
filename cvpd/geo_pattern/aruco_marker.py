@@ -29,7 +29,6 @@ class ArucoMarker:
             LOGGER.error(error_msg)
             raise KeyError(error_msg)
         self.aruco_dict = cv.aruco.getPredefinedDictionary(self.ar_type_dict)
-        self.cv_detector = cv.aruco.ArucoDetector(self.aruco_dict)
         # Check if aruco_id is valid
         if 0 <= aruco_id < self.id_range:
             self.aruco_id = aruco_id
