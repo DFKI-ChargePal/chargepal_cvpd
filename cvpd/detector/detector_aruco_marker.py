@@ -53,7 +53,6 @@ class ArucoMarkerDetector(DetectorBase):
                 # estimate pose for the single marker
                 found, pq = self._estimate_pose_single_marker(corners, self.marker.obj_pts_marker)
                 if found:
-                    print("\n\n",pq)
                     T_12 = np.diag([0., 0., 0., 1.])
                     T_23 = np.diag([0., 0., 0., 1.])
                     t_12 = np.reshape(pq[0], 3)
@@ -67,9 +66,6 @@ class ArucoMarkerDetector(DetectorBase):
                     T_13 = T_12 @ T_23
                     p = tuple(np.reshape(T_13[:3, 3], 3).tolist())
                     q = tuple((R.from_matrix(T_13[:3, :3])).as_quat().tolist())
-                    print((p, q))
-                    # p = tuple((np.reshape(pq[0], 3) + np.reshape(self.marker.offset_p, 3)).tolist())
-                    # q = tuple((R.from_quat(pq[1]) * R.from_quat(self.marker.offset_q)).as_quat().tolist())
         return found, (p, q)
 
     def _estimate_pose_single_marker(self,
@@ -100,6 +96,6 @@ class ArucoMarkerDetector(DetectorBase):
             tvec=t_vec,
             criteria=(cv.TermCriteria_EPS + cv.TermCriteria_COUNT, 30, 0.001)
             )
-        # r_vec = np.squeeze(rotate_rot_vec(r_vec, 'z', -np.pi/2))
+        r_vec = np.reshape(rotate_rot_vec(r_vec, 'x', np.pi), 3)
         pq = converter.cv_to_pq(r_vec, t_vec)
         return found, pq
