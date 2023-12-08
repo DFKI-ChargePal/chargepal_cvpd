@@ -23,7 +23,7 @@ tqdm = "^4.66.1"
 type = "git"
 url = "git@git.ni.dfki.de:chargepal/manipulation/chargepal_camera_kit.git"
 reference = "HEAD"
-resolved_reference = "ee3513090e3f5746761d8a09e4619cb550e235c0"
+resolved_reference = "44a88eb4c4b9846edb0ac8c6f7537294f0bb1eea"
 
 [[package]]
 name = "colorama"
