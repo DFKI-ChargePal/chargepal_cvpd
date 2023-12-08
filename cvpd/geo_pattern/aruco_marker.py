@@ -21,7 +21,7 @@ class ArucoMarker:
                  aruco_size_mm: int,
                  aruco_type: str,
                  marker_offset_xyz: npt.ArrayLike | None = None,
-                 marker_offset_wxyz: npt.ArrayLike | None = None,
+                 marker_offset_xyzw: npt.ArrayLike | None = None,
                  ) -> None:
         self.ar_type_dict = ARUCO_DICT.get(aruco_type)
         if self.ar_type_dict is None:
@@ -36,7 +36,7 @@ class ArucoMarker:
             raise ValueError(f"Given id of ArUco marker '{aruco_id}' not in valid range 0...{self.id_range - 1}")
         # Store offset as numpy array
         self.offset_p = np.array(marker_offset_xyz)
-        self.offset_q = np.array(marker_offset_wxyz)
+        self.offset_q = np.array(marker_offset_xyzw)
         # added object points
         ar_size_m_2 = aruco_size_mm / 2 / 1000
         self.obj_pts_marker = np.array([

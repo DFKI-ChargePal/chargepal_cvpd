@@ -28,7 +28,7 @@ class ArucoMarkerDetector(DetectorBase):
         marker_size = self.config['marker_size']
         marker_offset = self.config['marker_offset']
         self.marker = ArucoMarker(
-            marker_id, marker_size, marker_type, marker_offset['xyz'], marker_offset['wxyz'])
+            marker_id, marker_size, marker_type, marker_offset['xyz'], marker_offset['xyzw'])
         self.cv_detector = cv.aruco.ArucoDetector(self.marker.aruco_dict)
 
     def _find_pose(self) -> tuple[bool, PosOrinType]:
@@ -39,7 +39,7 @@ class ArucoMarkerDetector(DetectorBase):
         """
         # Initialize return variables with default values
         found = False
-        p, q = (0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0)
+        p, q = (0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 1.0)
         img = self.camera.get_color_frame()
         # get all markers on image
         found_corners, found_ids, _ = self.cv_detector.detectMarkers(img)
@@ -53,8 +53,23 @@ class ArucoMarkerDetector(DetectorBase):
                 # estimate pose for the single marker
                 found, pq = self._estimate_pose_single_marker(corners, self.marker.obj_pts_marker)
                 if found:
-                    p = tuple((np.reshape(pq[0], 3) + np.reshape(self.marker.offset_p, 3)).tolist())
-                    q = tuple((R.from_quat(pq[1]) * R.from_quat(self.marker.offset_q)).as_quat().tolist())
+                    print("\n\n",pq)
+                    T_12 = np.diag([0., 0., 0., 1.])
+                    T_23 = np.diag([0., 0., 0., 1.])
+                    t_12 = np.reshape(pq[0], 3)
+                    t_23 = np.reshape(self.marker.offset_p, 3)
+                    rot_12 = R.from_quat(pq[1]).as_matrix()
+                    rot_23 = R.from_quat(self.marker.offset_q).as_matrix()
+                    T_12[:3, :3] = rot_12
+                    T_12[:3, 3] = t_12
+                    T_23[:3, :3] = rot_23
+                    T_23[:3, 3] = t_23
+                    T_13 = T_12 @ T_23
+                    p = tuple(np.reshape(T_13[:3, 3], 3).tolist())
+                    q = tuple((R.from_matrix(T_13[:3, :3])).as_quat().tolist())
+                    print((p, q))
+                    # p = tuple((np.reshape(pq[0], 3) + np.reshape(self.marker.offset_p, 3)).tolist())
+                    # q = tuple((R.from_quat(pq[1]) * R.from_quat(self.marker.offset_q)).as_quat().tolist())
         return found, (p, q)
 
     def _estimate_pose_single_marker(self,
