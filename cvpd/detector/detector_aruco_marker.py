@@ -10,7 +10,7 @@ from scipy.spatial.transform import Rotation as R
 
 # local
 from cvpd.utilities import rotate_rot_vec
-from cvpd.geo_pattern.aruco_marker import ArucoMarker
+from cvpd.geo_pattern.pattern_aruco_marker import ArucoMarker
 
 # typing
 from numpy import typing as npt
@@ -23,12 +23,7 @@ class ArucoMarkerDetector(DetectorBase):
         # Read configuration via base class
         super().__init__(config_file)
         # Get marker configuration
-        marker_id = self.config['marker_id']
-        marker_type = self.config['marker_type']
-        marker_size = self.config['marker_size']
-        marker_offset = self.config['marker_offset']
-        self.marker = ArucoMarker(
-            marker_id, marker_size, marker_type, marker_offset['xyz'], marker_offset['xyzw'])
+        self.marker = ArucoMarker(self.config_fp)
         self.cv_detector = cv.aruco.ArucoDetector(self.marker.aruco_dict)
 
     def _find_pose(self) -> tuple[bool, PosOrinType]:

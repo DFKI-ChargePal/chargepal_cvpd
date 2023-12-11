@@ -3,8 +3,11 @@ from __future__ import annotations
 import logging
 import cv2 as cv
 import numpy as np
+from pathlib import Path
+from dataclasses import dataclass
 
 # local
+from cvpd.utilities import load_yaml
 from cvpd.geo_pattern._aruco_types import ARUCO_DICT
 
 # typing
@@ -17,21 +20,25 @@ LOGGER = logging.getLogger(__name__)
 
 class CharucoBoard:
 
-    def __init__(self,
-                 aruco_size_mm: int,
-                 aruco_type: str,
-                 checker_size_mm: int,
-                 checker_grid_size: tuple[int, int]
-                 ) -> None:
-        self.ar_type_dict = ARUCO_DICT.get(aruco_type)
+    @dataclass
+    class Config:
+        marker_size: int
+        marker_type: str
+        checker_size: int
+        checker_grid_size: tuple[int, int]
+
+    def __init__(self, config_fp: Path) -> None:
+        self.cfg_fp = config_fp
+        self.cfg = CharucoBoard.Config(**load_yaml(config_fp))
+        self.ar_type_dict = ARUCO_DICT.get(self.cfg.marker_type)
         if self.ar_type_dict is None:
-            error_msg = f"No AR tag with key '{aruco_type}' found"
+            error_msg = f"No AR tag with key '{self.cfg.marker_type}' found"
             LOGGER.error(error_msg)
             raise KeyError(error_msg)
         self.aruco_dict = cv.aruco.getPredefinedDictionary(self.ar_type_dict)
-        self.grid_size = checker_grid_size
-        self.checker_size_m = checker_size_mm / 1000.0
-        self.aruco_size_m = aruco_size_mm / 1000.0
+        self.grid_size = self.cfg.checker_grid_size
+        self.checker_size_m = self.cfg.checker_size / 1000.0
+        self.aruco_size_m = self.cfg.marker_size / 1000.0
         self.cv_board = cv.aruco.CharucoBoard(self.grid_size, self.checker_size_m, self.aruco_size_m, self.aruco_dict)
 
         id_list = self.cv_board.getIds()

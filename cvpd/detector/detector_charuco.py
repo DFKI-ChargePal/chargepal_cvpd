@@ -8,7 +8,7 @@ from camera_kit import converter
 from camera_kit import DetectorBase
 
 # local
-from cvpd.geo_pattern.charuco_board import CharucoBoard
+from cvpd.geo_pattern.pattern_charuco_board import CharucoBoard
 
 # typing
 from camera_kit.core import PosOrinType
@@ -20,11 +20,7 @@ class CharucoDetector(DetectorBase):
         # Read configuration via base class
         super().__init__(config_file)
         # Get charuco configuration
-        marker_size = self.config['marker_size']
-        marker_type = self.config['marker_type']
-        checker_size = self.config['checker_size']
-        checker_grid_size = self.config['checker_grid_size']
-        self.board = CharucoBoard(marker_size, marker_type, checker_size, checker_grid_size)
+        self.board = CharucoBoard(self.config_fp)
         self.cv_detector = cv.aruco.ArucoDetector(self.board.aruco_dict)
 
     def _find_pose(self) -> tuple[bool, PosOrinType]:
