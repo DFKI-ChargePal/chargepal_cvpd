@@ -30,7 +30,7 @@ class ArucoMarkerDetector(DetectorBase):
         """ Finding the pose of a marker described object
 
         Returns:
-            (True if pose was found; Pose containing position [xyz] and quaternion [wxyz] vector)
+            (True if pose was found; Pose containing position [xyz] and quaternion [xyzw] vector)
         """
         # Initialize return variables with default values
         found = False
