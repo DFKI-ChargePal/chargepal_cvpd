@@ -91,6 +91,6 @@ class ArucoMarkerDetector(DetectorBase):
             tvec=t_vec,
             criteria=(cv.TermCriteria_EPS + cv.TermCriteria_COUNT, 30, 0.001)
             )
-        r_vec = np.reshape(rotate_rot_vec(r_vec, 'x', np.pi), 3)
+        # r_vec = np.reshape(rotate_rot_vec(r_vec, 'x', np.pi), 3)
         pq = converter.cv_to_pq(r_vec, t_vec)
         return found, pq
