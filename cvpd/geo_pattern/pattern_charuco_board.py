@@ -11,7 +11,7 @@ from cvpd.utilities import load_yaml
 from cvpd.geo_pattern._aruco_types import ARUCO_DICT
 
 # typing
-from typing import Any
+from typing import Any, Sequence
 from numpy import typing as npt
 
 
@@ -26,6 +26,14 @@ class CharucoBoard:
         marker_type: str
         checker_size: int
         checker_grid_size: tuple[int, int]
+        offset: dict[str, Sequence[float]] | None = None
+
+        def __post_init__(self) -> None:
+            if self.offset is None:
+                self.offset = {
+                    'xyz': (0.0, 0.0, 0.0),
+                    'xyzw': (0.0, 0.0, 0.0, 1.0),
+                }
 
     def __init__(self, config_fp: Path) -> None:
         self.cfg_fp = config_fp
@@ -40,6 +48,9 @@ class CharucoBoard:
         self.checker_size_m = self.cfg.checker_size / 1000.0
         self.aruco_size_m = self.cfg.marker_size / 1000.0
         self.cv_board = cv.aruco.CharucoBoard(self.grid_size, self.checker_size_m, self.aruco_size_m, self.aruco_dict)
+        assert self.cfg.offset  # For static type check
+        self.offset_p = np.reshape(self.cfg.offset['xyz'], 3)
+        self.offset_q = np.reshape(self.cfg.offset['xyzw'], 4)
 
         id_list = self.cv_board.getIds()
         n_cols, n_rows = self.grid_size

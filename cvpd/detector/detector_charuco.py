@@ -6,6 +6,7 @@ import numpy as np
 from pathlib import Path
 from camera_kit import converter
 from camera_kit import DetectorBase
+from scipy.spatial.transform import Rotation as R
 
 # local
 from cvpd.geo_pattern.pattern_charuco_board import CharucoBoard
@@ -54,4 +55,17 @@ class CharucoDetector(DetectorBase):
                     criteria=(cv.TermCriteria_EPS + cv.TermCriteria_COUNT, 30, 0.001)
                 )
                 p, q = converter.cv_to_pq(r_vec, t_vec)
+                T_12 = np.diag([0., 0., 0., 1.])
+                T_23 = np.diag([0., 0., 0., 1.])
+                t_12 = np.reshape(p, 3)
+                t_23 = np.reshape(self.board.offset_p, 3)
+                rot_12 = R.from_quat(q).as_matrix()
+                rot_23 = R.from_quat(self.board.offset_q).as_matrix()
+                T_12[:3, :3] = rot_12
+                T_12[:3, 3] = t_12
+                T_23[:3, :3] = rot_23
+                T_23[:3, 3] = t_23
+                T_13 = T_12 @ T_23
+                p = tuple(np.reshape(T_13[:3, 3], 3).tolist())
+                q = tuple((R.from_matrix(T_13[:3, :3])).as_quat().tolist())
         return found, (p, q)
