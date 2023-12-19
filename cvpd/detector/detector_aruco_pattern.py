@@ -80,5 +80,5 @@ class ArucoPatternDetector(Detector):
                 )
                 # Rotate estimated pose around 180 degrees in x axes
                 pq = converter.cv_to_pq(r_vec, t_vec)
-
+                pq = self.config_offset.apply_offset(pq)
         return found, pq
