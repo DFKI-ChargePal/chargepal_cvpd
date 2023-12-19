@@ -49,7 +49,7 @@ class ArucoPatternDetector(Detector):
 
         # Check how many markers are found:
         found_marker_ids = set(marker_ids) & self.config_pattern.marker_ids
-        if len(found_marker_ids) >= 3:
+        if len(found_marker_ids) >= 4:
             obj_points_list = []
             img_points_list = []
             for mark_id in found_marker_ids:
@@ -63,19 +63,19 @@ class ArucoPatternDetector(Detector):
 
             obj_points = np.array(obj_points_list)
             img_points = np.array(img_points_list)
-            found, r_vec, t_vec = cv.solveP3P(
-                obj_points, img_points, self.camera.cc.intrinsic, self.camera.cc.distortion, flags=cv.SOLVEPNP_P3P)
-            # found, r_vec, t_vec = cv.solvePnP(
-            #     obj_points, img_points, self.camera.cc.intrinsic, self.camera.cc.distortion, flags=cv.SOLVEPNP_IPPE
-            # )
+            # found, r_vec, t_vec = cv.solveP3P(
+            #     obj_points, img_points, self.camera.cc.intrinsic, self.camera.cc.distortion, flags=cv.SOLVEPNP_P3P)
+            found, r_vec, t_vec = cv.solvePnP(
+                obj_points, img_points, self.camera.cc.intrinsic, self.camera.cc.distortion, flags=cv.SOLVEPNP_IPPE
+            )
             if found:
                 r_vec, t_vec = cv.solvePnPRefineLM(
                     objectPoints=obj_points,
                     imagePoints=img_points,
                     cameraMatrix=self.camera.cc.intrinsic,
                     distCoeffs=self.camera.cc.distortion,
-                    rvec=r_vec[0],
-                    tvec=t_vec[0],
+                    rvec=r_vec,
+                    tvec=t_vec,
                     criteria=(cv.TermCriteria_EPS + cv.TermCriteria_COUNT, 30, 0.001)
                 )
                 # Rotate estimated pose around 180 degrees in x axes
