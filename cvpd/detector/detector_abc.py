@@ -15,7 +15,7 @@ from numpy import typing as npt
 from camera_kit.core import PosOrinType
 
 
-class Detector(DetectorBase):
+class DetectorABC(DetectorBase, metaclass=abc.ABCMeta):
 
     def __init__(self, config_file: str | Path):
         # Read configuration via base class

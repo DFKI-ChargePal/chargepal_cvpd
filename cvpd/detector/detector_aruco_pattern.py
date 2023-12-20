@@ -7,7 +7,7 @@ from pathlib import Path
 from camera_kit import converter
 
 # local
-from cvpd.detector.detector import Detector
+from cvpd.detector.detector_abc import DetectorABC
 from cvpd.detector.helper import ArucoOpenCV
 from cvpd.config.config_aruco_pattern import ArucoPattern
 
@@ -15,7 +15,7 @@ from cvpd.config.config_aruco_pattern import ArucoPattern
 from camera_kit.core import PosOrinType
 
 
-class ArucoPatternDetector(Detector):
+class ArucoPatternDetector(DetectorABC):
 
     def __init__(self, config_file: str | Path):
         # Read configuration via base class

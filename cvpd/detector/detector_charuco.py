@@ -7,14 +7,14 @@ from pathlib import Path
 from camera_kit import converter
 
 # local
-from cvpd.detector.detector import Detector
+from cvpd.detector.detector_abc import DetectorABC
 from cvpd.config.config_charuco import Charuco
 
 # typing
 from camera_kit.core import PosOrinType
 
 
-class CharucoDetector(Detector):
+class CharucoDetector(DetectorABC):
 
     def __init__(self, config_file: str | Path):
         # Read configuration via base class
