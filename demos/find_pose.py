@@ -16,7 +16,7 @@ def find_pose(opt: Namespace) -> None:
 
     with ck.camera_manager('build_in') as cam:
         cam.load_coefficients(_parent_dir.joinpath(_cc_path))
-        dtt = pd.factory.get_detector(_parent_dir.joinpath('dtt_config', opt.config_file))
+        dtt = pd.factory.create(_parent_dir.joinpath('dtt_config', opt.config_file))
         dtt.register_camera(cam)
         while not ck.user.stop():
             _, _ = dtt.find_pose(render=True)

@@ -18,10 +18,10 @@ class DetectorFactory:
     def __init__(self) -> None:
         self._detectors: dict[str, Type[DetectorABC]] = {}
 
-    def register_detector(self, name: str, detector: Type[DetectorABC]) -> None:
+    def register(self, name: str, detector: Type[DetectorABC]) -> None:
         self._detectors[name] = detector
 
-    def get_detector(self, config_fp: str | Path) -> DetectorABC:
+    def create(self, config_fp: str | Path) -> DetectorABC:
         config_fp = Path(config_fp)
         cfg_fn = config_fp.name
         for dtt_name, dtt_class in self._detectors.items():
@@ -31,6 +31,6 @@ class DetectorFactory:
 
 
 factory = DetectorFactory()
-factory.register_detector('charuco', CharucoDetector)
-factory.register_detector('aruco_marker', ArucoMarkerDetector)
-factory.register_detector('aruco_pattern', ArucoPatternDetector)
+factory.register('charuco', CharucoDetector)
+factory.register('aruco_marker', ArucoMarkerDetector)
+factory.register('aruco_pattern', ArucoPatternDetector)
