@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "cvpd"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8, <3.12"
 opencv-python = "4.7.0.68"
 pyrealsense2 = "^2.54.2.5684"
 scipy = "1.9.3"
@@ -16,8 +16,9 @@ tomli-w = "^1.0.0"
 tomlkit = "^0.12.3"
 tqdm = "^4.66.1"
 pyyaml = "^6.0.1"
+spatialmath-python = "^1.1.9"
 # Internal dependencies
-chargepal_camera_kit = {git = "git@git.ni.dfki.de:chargepal/manipulation/chargepal_camera_kit.git"}
+chargepal_camera_kit = {git = "git@git.ni.dfki.de:chargepal/manipulation/chargepal_camera_kit.git", rev="feat/spatialmath"}
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.7.1"

@@ -3,6 +3,7 @@ from __future__ import annotations
 # global
 import cv2 as cv
 import numpy as np
+import spatialmath as sm
 from pathlib import Path
 from camera_kit import converter
 
@@ -12,7 +13,6 @@ from cvpd.config.config_aruco_marker import ArucoMarker
 
 # typing
 from numpy import typing as npt
-from camera_kit.core import PosOrinType
 
 
 class ArucoMarkerDetector(DetectorABC):
@@ -40,15 +40,14 @@ class ArucoMarkerDetector(DetectorABC):
             [-ar_size_m_2, -ar_size_m_2, 0.0],
         ], dtype=np.float_)
 
-    def _find_pose(self) -> tuple[bool, PosOrinType]:
+    def _find_pose(self) -> tuple[bool, sm.SE3]:
         """ Finding the pose of a marker described object
 
         Returns:
-            (True if pose was found; Pose containing position [xyz] and quaternion [xyzw] vector)
+            (True if pose was found; Pose as SE(3) transformation matrix)
         """
         # Initialize return variables with default values
-        found = False
-        pq = (0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 1.0)
+        found, mat = False, sm.SE3()
         img = self.camera.get_color_frame()
         # get all markers on image
         found_corners, found_ids, _ = self.cv_detector.detectMarkers(img)
@@ -60,22 +59,22 @@ class ArucoMarkerDetector(DetectorABC):
                 id_idx = det_id_list.index(self.config_marker.marker_id)
                 corners = found_corners[id_idx].reshape((4, 2))
                 # estimate pose for the single marker
-                found, pq = self._estimate_pose_single_marker(corners, self.obj_pts_marker)
+                found, mat = self._estimate_pose_single_marker(corners, self.obj_pts_marker)
                 if found:
-                    pq = self.config_offset.apply_offset(pq)
-        return found, pq
+                    mat = self.config_offset.apply_offset(mat)
+        return found, mat
 
     def _estimate_pose_single_marker(self,
                                      marker_corners: npt.NDArray[np.float_],
                                      marker_obj_pts: npt.NDArray[np.float_]
-                                     ) -> tuple[bool, PosOrinType]:
+                                     ) -> tuple[bool, sm.SE3]:
         """ Method to estimate the pose of a single ArUco marker.
 
         Args:
             marker_corners: The marker corner points in the image
 
         Returns:
-            The rotation and translation vector of the marker pose
+            (True if pose was found; The marker pose as SE(3) object)
         """
         found, r_vec, t_vec = cv.solvePnP(
             marker_obj_pts,
@@ -93,6 +92,5 @@ class ArucoMarkerDetector(DetectorABC):
             tvec=t_vec,
             criteria=(cv.TermCriteria_EPS + cv.TermCriteria_COUNT, 30, 0.001)
             )
-        # r_vec = np.reshape(rotate_rot_vec(r_vec, 'x', np.pi), 3)
-        pq = converter.cv_to_pq(r_vec, t_vec)
-        return found, pq
+        mat = converter.cv_to_se3(r_vec, t_vec)
+        return found, mat

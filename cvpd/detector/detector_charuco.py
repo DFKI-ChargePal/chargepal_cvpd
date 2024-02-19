@@ -3,15 +3,13 @@ from __future__ import annotations
 # global
 import cv2 as cv
 import numpy as np
+import spatialmath as sm
 from pathlib import Path
 from camera_kit import converter
 
 # local
 from cvpd.detector.detector_abc import DetectorABC
 from cvpd.config.config_charuco import Charuco
-
-# typing
-from camera_kit.core import PosOrinType
 
 
 class CharucoDetector(DetectorABC):
@@ -31,15 +29,14 @@ class CharucoDetector(DetectorABC):
         )
         self.cv_detector = cv.aruco.ArucoDetector(self.config_charuco.cv_aruco_dict)
 
-    def _find_pose(self) -> tuple[bool, PosOrinType]:
-        """ Finding the pose of a charuco board
+    def _find_pose(self) -> tuple[bool, sm.SE3]:
+        """ Finding the pose of the charuco board
 
         Returns:
-            (True if pose was found; Pose containing position [xyz] and quaternion [wxyz] vector
+            (True if pose was found; Pose as SE(3) transformation matrix)
         """
         # Initialize return variables with default values
-        found = False
-        pq = (0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0)
+        found, mat = False, sm.SE3()
         img = self.camera.get_color_frame()
 
         # load camera matrix and distortion coefficients from camera
@@ -61,6 +58,6 @@ class CharucoDetector(DetectorABC):
                     tvec=t_vec,
                     criteria=(cv.TermCriteria_EPS + cv.TermCriteria_COUNT, 30, 0.001)
                 )
-                pq = converter.cv_to_pq(r_vec, t_vec)
-                pq = self.config_offset.apply_offset(pq)
-        return found, pq
+                mat = converter.cv_to_se3(r_vec, t_vec)
+                mat = self.config_offset.apply_offset(mat)
+        return found, mat
