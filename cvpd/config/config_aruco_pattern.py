@@ -51,4 +51,3 @@ class ArucoPattern(Configurable):
             error_msg = f"No AR tag with key '{self.marker_type}' found"
             raise KeyError(error_msg)
         return cv.aruco.getPredefinedDictionary(ar_type_dict)
-

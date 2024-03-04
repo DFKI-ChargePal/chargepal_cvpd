@@ -20,7 +20,7 @@ class Offset(Configurable):
                 'xyz': [0.0, 0.0, 0.0],
                 'xyzw': [0.0, 0.0, 0.0, 1.0],
             }
-        self.mat = sm.SE3().Rt(R=q2r(offset['xyzw'], order='xyzs'), t=offset['xyz'])
+        self.mat = sm.SE3().Rt(R=q2r(sm.base.qunit(offset['xyzw']), order='xyzs'), t=offset['xyz'])
 
     def to_dict(self) -> dict[str, dict[str, list[float]]]:
         return {
