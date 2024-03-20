@@ -40,6 +40,8 @@ class ArucoPatternDetector(DetectorABC):
         # Initialize return variables with default values
         found, mat = False, sm.SE3()
         img = self.camera.get_color_frame()
+        if self.config_preproc.invert_img:
+            img = cv.bitwise_not(img)
         # Get all markers on image
         marker_ids, marker_corners = self.cv_detector.find_group_marker_corners(
             img, list(self.config_pattern.marker_ids))

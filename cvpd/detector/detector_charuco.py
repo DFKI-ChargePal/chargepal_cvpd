@@ -38,6 +38,8 @@ class CharucoDetector(DetectorABC):
         # Initialize return variables with default values
         found, mat = False, sm.SE3()
         img = self.camera.get_color_frame()
+        if self.config_preproc.invert_img:
+            img = cv.bitwise_not(img)
 
         # load camera matrix and distortion coefficients from camera
         cam_intrinsic = self.camera.cc.intrinsic

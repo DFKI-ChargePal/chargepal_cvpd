@@ -10,9 +10,7 @@ from camera_kit import DetectorBase
 from cvpd.utilities import dump_yaml
 from cvpd.config.config import Configuration
 from cvpd.config.config_offset import Offset
-
-# typing
-from numpy import typing as npt
+from cvpd.config.config_preproc import Preprocessing
 
 
 class DetectorABC(DetectorBase, metaclass=abc.ABCMeta):
@@ -21,8 +19,9 @@ class DetectorABC(DetectorBase, metaclass=abc.ABCMeta):
         # Read configuration via base class
         super().__init__(config_file)
         # Create configuration
+        self.config_preproc = Preprocessing(**self.config_dict)
         self.config_offset = Offset(**self.config_dict)
-        self.config = Configuration(self.config_offset)
+        self.config = Configuration(self.config_preproc, self.config_offset)
 
     @abc.abstractmethod
     def _find_pose(self) -> tuple[bool, sm.SE3]:

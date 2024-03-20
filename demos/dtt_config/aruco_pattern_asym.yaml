@@ -1,5 +1,6 @@
 marker_size: 18
 marker_type: 'DICT_4X4_100'
+invert_img: true
 marker_layout:
   31: [-22.5,  22.5]
   32: [51.0,   51.0]
