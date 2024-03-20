@@ -17,11 +17,11 @@ class ArucoPattern(Configurable):
         super().__init__()
         self.marker_size: int = kwargs['marker_size']
         self.marker_type: str = kwargs['marker_type']
-        self.marker_layout: dict[int, list[int]] = {}
+        self.marker_layout: dict[int, list[float]] = {}
         raw_marker_layout = kwargs['marker_layout']
         for k, v in raw_marker_layout.items():
             assert len(v) == 2
-            self.marker_layout[int(k)] = [int(_v) for _v in v]
+            self.marker_layout[int(k)] = [float(_v) for _v in v]
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -38,7 +38,7 @@ class ArucoPattern(Configurable):
     def id_range(self) -> int:
         return int(self.cv_aruco_dict.bytesList.shape[0])
 
-    def get_marker_position(self, marker_id: int) -> list[int]:
+    def get_marker_position(self, marker_id: int) -> list[float]:
         marker_pos = self.marker_layout.get(marker_id)
         if marker_pos is None:
             raise KeyError(f"There is no position defined for the given marker id: {marker_id}")
