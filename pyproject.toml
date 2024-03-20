@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chargepal-cvpd"
-version = "0.5.0"
+version = "0.5.1"
 description = "Package to detect 3D poses from RGB images using marker and geometric patterns"
 authors = ["Georg John <georg.john@dfki.de>"]
 readme = "README.md"
