@@ -18,7 +18,7 @@ tqdm = "^4.66.1"
 pyyaml = "^6.0.1"
 spatialmath-python = "^1.1.9"
 # Internal dependencies
-chargepal_camera_kit = {git = "git@git.ni.dfki.de:chargepal/manipulation/chargepal_camera_kit.git", rev="feat/spatialmath"}
+chargepal_camera_kit = {git = "git@git.ni.dfki.de:chargepal/manipulation/chargepal_camera_kit.git", rev="main"}
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.7.1"

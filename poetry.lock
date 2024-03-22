@@ -48,8 +48,8 @@ tqdm = "^4.66.1"
 [package.source]
 type = "git"
 url = "git@git.ni.dfki.de:chargepal/manipulation/chargepal_camera_kit.git"
-reference = "feat/spatialmath"
-resolved_reference = "24e128973e405dfb9803045e0d873ea638e13d1b"
+reference = "main"
+resolved_reference = "9c5f48510a7e4e64c697c6aeb5d36fcb87bd5283"
 
 [[package]]
 name = "colorama"
@@ -266,13 +266,13 @@ license = ["ukkonen"]
 
 [[package]]
 name = "importlib-resources"
-version = "6.3.2"
+version = "6.4.0"
 description = "Read resources from Python packages"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "importlib_resources-6.3.2-py3-none-any.whl", hash = "sha256:f41f4098b16cd140a97d256137cfd943d958219007990b2afb00439fc623f580"},
-    {file = "importlib_resources-6.3.2.tar.gz", hash = "sha256:963eb79649252b0160c1afcfe5a1d3fe3ad66edd0a8b114beacffb70c0674223"},
+    {file = "importlib_resources-6.4.0-py3-none-any.whl", hash = "sha256:50d10f043df931902d4194ea07ec57960f66a80449ff867bfe782b4c486ba78c"},
+    {file = "importlib_resources-6.4.0.tar.gz", hash = "sha256:cdb2b453b8046ca4e3798eb1d84f3cce1446a0e8e7b5ef4efb600f19fc398145"},
 ]
 
 [package.dependencies]
@@ -280,7 +280,7 @@ zipp = {version = ">=3.1.0", markers = "python_version < \"3.10\""}
 
 [package.extras]
 docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (<7.2.5)", "sphinx (>=3.5)", "sphinx-lint"]
-testing = ["jaraco.collections", "pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy", "pytest-ruff (>=0.2.1)", "zipp (>=3.17)"]
+testing = ["jaraco.test (>=5.4)", "pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy", "pytest-ruff (>=0.2.1)", "zipp (>=3.17)"]
 
 [[package]]
 name = "kiwisolver"
@@ -1037,4 +1037,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8, <3.12"
-content-hash = "c8ead922030d2a466d96c65cc1e00e0990e8ad65beb23a73eb5fd0e0620ff1b8"
+content-hash = "12f081af1f11f9bec9414b01a404f1aba9a77566bef9182bdd6f1eba24198b87"
